@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<FirstProjectContext>(options =>
 {
-    options.UseSqlServer("Data source=.;initial Catalog=First_Shop_DB;Integrated Security=True");
+    options.UseSqlServer("Data source=.\\SQL2019;initial Catalog=First_Shop_DB;Integrated Security=True");
 });
 
 #endregion
