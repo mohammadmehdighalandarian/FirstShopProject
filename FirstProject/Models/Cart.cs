@@ -11,7 +11,7 @@
 
         public void add(CartItem item)
         {
-            if (CartItems.Exists(x=>x.Item.Id==item.Id))
+            if (CartItems.Exists(x=>x.Item.Id==item.Item.Id))
             {
                 CartItems.Find(x => x.Item.Id == item.Item.Id).Quantity += 1;
             }

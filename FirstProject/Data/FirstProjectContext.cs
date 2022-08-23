@@ -122,18 +122,18 @@ namespace FirstProject.Data
                 });
 
             modelBuilder.Entity<CategoryToProduct>().HasData(
-                new CategoryToProduct() { CategoryId = 7, ProductId = 1 },
-                new CategoryToProduct() { CategoryId = 8, ProductId = 1 },
-                new CategoryToProduct() { CategoryId = 9, ProductId = 1 },
-                new CategoryToProduct() { CategoryId = 10, ProductId = 1 },
-                new CategoryToProduct() { CategoryId = 7, ProductId = 2 },
-                new CategoryToProduct() { CategoryId = 8, ProductId = 2 },
-                new CategoryToProduct() { CategoryId = 9, ProductId = 2 },
-                new CategoryToProduct() { CategoryId = 10, ProductId = 2 },
-                new CategoryToProduct() { CategoryId = 7, ProductId = 3 },
-                new CategoryToProduct() { CategoryId = 8, ProductId = 3 },
-                new CategoryToProduct() { CategoryId = 9, ProductId = 3 },
-                new CategoryToProduct() { CategoryId = 10, ProductId = 3 }
+                new CategoryToProduct() { CategoryId = 1, ProductId = 1 },
+                new CategoryToProduct() { CategoryId = 2, ProductId = 1 },
+                new CategoryToProduct() { CategoryId = 3, ProductId = 1 },
+                new CategoryToProduct() { CategoryId = 4, ProductId = 1 },
+                new CategoryToProduct() { CategoryId = 1, ProductId = 2 },
+                new CategoryToProduct() { CategoryId = 2, ProductId = 2 },
+                new CategoryToProduct() { CategoryId = 3, ProductId = 2 },
+                new CategoryToProduct() { CategoryId = 4, ProductId = 2 },
+                new CategoryToProduct() { CategoryId = 1, ProductId = 3 },
+                new CategoryToProduct() { CategoryId = 2, ProductId = 3 },
+                new CategoryToProduct() { CategoryId = 3, ProductId = 3 },
+                new CategoryToProduct() { CategoryId = 4, ProductId = 3 }
                 );
             #endregion
             base.OnModelCreating(modelBuilder);

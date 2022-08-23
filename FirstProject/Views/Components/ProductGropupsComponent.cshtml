@@ -1,0 +1,15 @@
+﻿@model IEnumerable<ShowCategories>
+
+<ul class="list-group">
+    
+    @foreach (var item in Model)
+    {
+        <a asp-controller="Product" asp-action="ShowProductsinCategory" asp-route-id="@item.GroupId" >
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                @item.name
+                <span class="badge badge-primary badge-pill">@item.ProductCount</span>
+            </li>
+        </a>
+    }
+   
+</ul>

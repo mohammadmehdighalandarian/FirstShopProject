@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Product>
 @{
-    ViewData["Title"] = "فروشگاه اینترنتی";
+    ViewData["Title"] = @ViewData["CategoryName"];
 }
 
 <div class="text-center">
-    <h1 class="display-4">به فروشگاه ما خوش آمدید</h1>
+    <h1 class="display-4">محصولات گروه @ViewData["CategoryName"]</h1>
     <hr/>
     <div class="row">
         @foreach(var item in Model)
