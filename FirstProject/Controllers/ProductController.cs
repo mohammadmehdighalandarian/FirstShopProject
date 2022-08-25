@@ -23,7 +23,6 @@ namespace FirstProject.Controller
 
             ViewData["CategoryName"] = _firstProjectContext.Categories.Find(id).Name;
             return View(Products);
-            
         }
     }
 }

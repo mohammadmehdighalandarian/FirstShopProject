@@ -1,4 +1,5 @@
 using FirstProject.Data;
+using FirstProject.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,11 @@ builder.Services.AddDbContext<FirstProjectContext>(options =>
 
 #endregion
 
+#region Ioc
+
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+
+#endregion
 
 var app = builder.Build();
 
