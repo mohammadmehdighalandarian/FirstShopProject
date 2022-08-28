@@ -31,7 +31,7 @@ header a {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    align-items:center;
+    align-items: top;
 }
 
 nav {
@@ -62,13 +62,12 @@ main {
 }
 
 table {
-    
+    width: 100%
 }
 
 td, th {
     border: 1px solid #999;
     padding: 0.5rem;
-    text-align: center;
 }
 
 .myButton {
