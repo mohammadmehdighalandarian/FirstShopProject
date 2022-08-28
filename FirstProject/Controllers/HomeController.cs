@@ -1,7 +1,9 @@
 ﻿using FirstProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 using FirstProject.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace FirstProject.Controllers
@@ -10,7 +12,6 @@ namespace FirstProject.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly FirstProjectContext _firstProjectContext;
-        private static Cart _cart=new Cart();
 
         public HomeController(ILogger<HomeController> logger, FirstProjectContext firstProjectContext)
         {
@@ -48,7 +49,7 @@ namespace FirstProject.Controllers
 
             return View(detailModeview);
         }
-
+        [Authorize]
         public IActionResult AddToCart(int Id)
         {
             
@@ -59,33 +60,88 @@ namespace FirstProject.Controllers
 
             if (Product!=null)
             {
-                var CartItem = new CartItem()
+                int Userid = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());
+                var Order = _firstProjectContext
+                    .order.FirstOrDefault(o => o.Userid == Userid && o.IsFinally == false);
+
+                if (Order != null)
                 {
-                    Item = Product.Item,
-                    Quantity = 1
-                };
-                _cart.add(CartItem);
+                    var orderdetail = _firstProjectContext
+                        .OrderDetails.FirstOrDefault(o => o.Productid == Product.Id &&o.Orderid==Order.Orderid);
+
+                    if (orderdetail!=null)
+                    {
+                        orderdetail.Count += 1;
+                    }
+                    else
+                    {
+                        _firstProjectContext.OrderDetails.Add(new OrderDetail()
+                        {
+                            Orderid = Order.Orderid,
+                            Productid = Product.Id,
+                            Count = 1,
+                            Price = Product.Item.Price
+                        });
+
+                    }
+                    
+                }
+                else
+                {
+                    Order = new Order()
+                    {
+                        IsFinally = false,
+                        CreateDate = DateTime.Now,
+                        Userid = Userid
+                    };
+                    _firstProjectContext.order.Add(Order);
+                    _firstProjectContext.SaveChanges();
+                    _firstProjectContext.OrderDetails.Add(new OrderDetail()
+                    {
+                        Orderid = Order.Orderid,
+                        Productid = Product.Id,
+                        Count = 1,
+                        Price = Product.Item.Price
+                    });
+
+                }
+                _firstProjectContext.SaveChanges();
             }
             return RedirectToAction("ShowCart");
         }
-
+        [Authorize]
         public IActionResult ShowCart()
         {
-            var CartVModel=new CartViewModel()
-            {
-                CartItems = _cart.CartItems,
-                OrderTotal = _cart.CartItems.Sum(x=>x.GetTotalPrice())
-            };
+            //var CartVModel=new CartViewModel()
+            //{
+            //    CartItems = _cart.CartItems,
+            //    OrderTotal = _cart.CartItems.Sum(x=>x.GetTotalPrice())
+            //};
 
-            List<CartItem> c = new List<CartItem>();
-            c = CartVModel.Sorting();
-            ViewBag.Price=CartVModel.OrderTotal;
-            return View(c);
+            //List<CartItem> c = new List<CartItem>();
+            //c = CartVModel.Sorting();
+            //ViewBag.Price=CartVModel.OrderTotal;
+            int Userid = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier).ToString());
+            var order = _firstProjectContext
+                .order.Where(x => x.IsFinally == false && x.Userid == Userid)
+                .Include(i => i.OrderDetails)
+                .ThenInclude(c => c.Product).FirstOrDefault();
+
+            return View(order);
         }
 
-        public IActionResult RemoveCart(int Id)
+        public IActionResult RemoveCart(int detailId)
         {
-            _cart.Remove(Id);
+            var orderDetail = _firstProjectContext.OrderDetails.Find(detailId);
+            if (orderDetail.Count > 1)
+            {
+                orderDetail.Count-=1;
+            }
+            else
+            {
+                _firstProjectContext.Remove(orderDetail);
+            }
+            _firstProjectContext.SaveChanges();
             return RedirectToAction("ShowCart");
         }
 

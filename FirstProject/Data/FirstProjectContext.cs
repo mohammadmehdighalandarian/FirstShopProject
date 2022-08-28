@@ -3,21 +3,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FirstProject.Data
 {
-    public class FirstProjectContext:DbContext
+    public class FirstProjectContext : DbContext
     {
-        public FirstProjectContext(DbContextOptions<FirstProjectContext> options):base(options)
+        public FirstProjectContext(DbContextOptions<FirstProjectContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<CategoryToProduct> CategoryToProducts { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Order> order { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CategoryToProduct>().HasKey(X => new {X.ProductId, X.CategoryId});
+            modelBuilder.Entity<CategoryToProduct>().HasKey(X => new { X.ProductId, X.CategoryId });
             modelBuilder.Entity<Category>().HasData(
                 new Category
                 {
@@ -30,7 +34,7 @@ namespace FirstProject.Data
                     Id = 2,
                     Name = "پوشاک",
                     Descreption = "پوشاک"
-                }, 
+                },
                 new Category
                 {
                     Id = 3,

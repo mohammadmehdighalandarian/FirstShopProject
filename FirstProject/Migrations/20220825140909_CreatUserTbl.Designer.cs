@@ -4,6 +4,7 @@ using FirstProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstProject.Migrations
 {
     [DbContext(typeof(FirstProjectContext))]
-    partial class FirstProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20220825140909_CreatUserTbl")]
+    partial class CreatUserTbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,59 +211,6 @@ namespace FirstProject.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FirstProject.Models.Order", b =>
-                {
-                    b.Property<int>("Orderid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Orderid"), 1L, 1);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsFinally")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Userid")
-                        .HasColumnType("int");
-
-                    b.HasKey("Orderid");
-
-                    b.HasIndex("Userid");
-
-                    b.ToTable("order");
-                });
-
-            modelBuilder.Entity("FirstProject.Models.OrderDetail", b =>
-                {
-                    b.Property<int>("DetailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DetailId"), 1L, 1);
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Orderid")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Productid")
-                        .HasColumnType("int");
-
-                    b.HasKey("DetailId");
-
-                    b.HasIndex("Orderid");
-
-                    b.HasIndex("Productid");
-
-                    b.ToTable("OrderDetails");
-                });
-
             modelBuilder.Entity("FirstProject.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -325,16 +274,14 @@ namespace FirstProject.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -356,36 +303,6 @@ namespace FirstProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("FirstProject.Models.Order", b =>
-                {
-                    b.HasOne("FirstProject.Models.Users", "Users")
-                        .WithMany("Orders")
-                        .HasForeignKey("Userid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("FirstProject.Models.OrderDetail", b =>
-                {
-                    b.HasOne("FirstProject.Models.Order", "Order")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("Orderid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FirstProject.Models.Product", "Product")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("Productid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
@@ -412,21 +329,9 @@ namespace FirstProject.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("FirstProject.Models.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
-                });
-
             modelBuilder.Entity("FirstProject.Models.Product", b =>
                 {
                     b.Navigation("CategoryToProducts");
-
-                    b.Navigation("OrderDetails");
-                });
-
-            modelBuilder.Entity("FirstProject.Models.Users", b =>
-                {
-                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,6 @@
 using FirstProject.Data;
 using FirstProject.Data.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,19 @@ builder.Services.AddDbContext<FirstProjectContext>(options =>
 #region Ioc
 
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+#endregion
+
+#region Authentication
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(option =>
+    {
+        option.LoginPath = "/Account/Login";
+        option.LogoutPath = "/Account/Logout";
+        option.ExpireTimeSpan = TimeSpan.FromDays(10);   //man ra 10 roz be khater dashte bash
+    });
 
 #endregion
 
@@ -36,6 +50,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();   //turn on ehraz hoveit
+app.UseAuthorization();    // controll sath dastresi karbaran
 
 app.UseAuthorization();
 

@@ -4,6 +4,7 @@ using FirstProject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FirstProject.Migrations
 {
     [DbContext(typeof(FirstProjectContext))]
-    partial class FirstProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20220827070347_makeordertbl")]
+    partial class makeordertbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -211,11 +213,11 @@ namespace FirstProject.Migrations
 
             modelBuilder.Entity("FirstProject.Models.Order", b =>
                 {
-                    b.Property<int>("Orderid")
+                    b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Orderid"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"), 1L, 1);
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
@@ -226,9 +228,12 @@ namespace FirstProject.Migrations
                     b.Property<int>("Userid")
                         .HasColumnType("int");
 
-                    b.HasKey("Orderid");
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("Userid");
+                    b.HasKey("OrderId");
+
+                    b.HasIndex("UsersId");
 
                     b.ToTable("order");
                 });
@@ -259,7 +264,7 @@ namespace FirstProject.Migrations
 
                     b.HasIndex("Productid");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetail");
                 });
 
             modelBuilder.Entity("FirstProject.Models.Product", b =>
@@ -364,7 +369,7 @@ namespace FirstProject.Migrations
                 {
                     b.HasOne("FirstProject.Models.Users", "Users")
                         .WithMany("Orders")
-                        .HasForeignKey("Userid")
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
