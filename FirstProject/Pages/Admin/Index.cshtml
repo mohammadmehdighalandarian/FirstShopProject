@@ -3,12 +3,13 @@
 @{
     ViewData["Title"] = "Index";
 }
+
 <h1>لیست کالاها</h1>
 <hr/>
 <p>
     <a asp-page="Add" class="myButton">افزودن کالا</a>
 </p>
-<table class="col-md-12">
+<table>
     <thead>
     <tr>
         <th>تصویر</th>
@@ -29,8 +30,9 @@
             </td>
             <td>@item.Item.Price</td>
             <td>
-                <a asp-page="Edit" asp-route-id="@item.Id">ویرایش</a>
-                <a asp-page="Delete" asp-route-id="@item.Id">حذف</a>
+                <input asp-page="Edit" asp-route-id="@item.Id" type="submit" class="btn btn-success" value="ویرایش"/>
+                <hr/>
+                <input asp-page="Remove" asp-route-id="@item.Id" type="submit" class="btn btn-danger" value="حذف"/>
             </td>
         </tr>
     }
