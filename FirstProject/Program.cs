@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using FirstProject.Data;
 using FirstProject.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -47,21 +48,34 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
-app.UseAuthentication();   //turn on ehraz hoveit
-app.UseAuthorization();    // controll sath dastresi karbaran
-
+app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapRazorPages();
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.Use(async (context, next) =>
+{
+    // Do work that doesn't write to the Response.
+    if (context.Request.Path.StartsWithSegments("/Admin"))
+    {
+        if (!context.User.Identity.IsAuthenticated)
+        {
+            context.Response.Redirect("/Account/Login");
+        }
+        else if (!bool.Parse(context.User.FindFirstValue("IsAdmin")))
+        {
+            context.Response.Redirect("/Account/Login");
+        }
+    }
+    await next.Invoke();
+    // Do logging or other work that doesn't write to the Response.
+});
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
 
 
 app.Run();

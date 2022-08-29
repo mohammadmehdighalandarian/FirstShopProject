@@ -7,6 +7,12 @@
 <h1 style="text-align: center">صفحه ثبت نام </h1>
 <hr />
 
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="alert alert-danger">
+        شما به این صفحه دسترسی ندارید با مدیریت سیستم تماس بگیرید
+    </div>
+}
 <div class="row">
     <div class="col-md-12">
         <form asp-action="Login">

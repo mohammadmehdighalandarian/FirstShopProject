@@ -30,9 +30,14 @@
             </td>
             <td>@item.Item.Price</td>
             <td>
-                <input asp-page="Edit" asp-route-id="@item.Id" type="submit" class="btn btn-success" value="ویرایش"/>
+                @*<input asp-page="Edit" asp-route-id="@item.Id" type="submit" class="btn btn-success" value="ویرایش"/>
                 <hr/>
-                <input asp-page="Remove" asp-route-id="@item.Id" type="submit" class="btn btn-danger" value="حذف"/>
+                <input asp-page="Remove" asp-route-id="@item.Id" type="submit" class="btn btn-danger" value="حذف"/>*@
+                
+                <a asp-page="Edit" asp-route-id="@item.Id">ویرایش</a>
+                <a asp-page="Remove" asp-route-id="@item.Id">حذف</a>
+
+
             </td>
         </tr>
     }

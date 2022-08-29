@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FirstProject.Models
 {
@@ -9,6 +10,7 @@ namespace FirstProject.Models
         [MaxLength(300)]
         [EmailAddress(ErrorMessage = "ادرس ایمیل نادرست است")]
         [Display(Name = "ایمیل")]
+        [Remote("VerifyEmail", "Account")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "لطفا {0} را وارد کنید ")]

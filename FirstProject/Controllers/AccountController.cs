@@ -48,6 +48,17 @@ namespace FirstProject.Controllers
             return RedirectToAction("Login");
         }
 
+        public IActionResult VerifyEmail(string Email)
+        {
+            if (_userRepository.IsExistEmail(Email.ToLower()))
+            {
+                return Json($"ایمیل {Email}تکراری می باشد.");
+            }
+            else
+            {
+                return Json("true");
+            }
+        }
         #endregion
 
         #region Login
@@ -77,6 +88,7 @@ namespace FirstProject.Controllers
             {
                 new Claim(ClaimTypes.NameIdentifier, User.Id.ToString()),
                 new Claim(ClaimTypes.Name, User.Email),
+                new Claim("IsAdmin", User.IsAdmin.ToString())
                // new Claim("CodeMeli", user.Email),
 
             };
