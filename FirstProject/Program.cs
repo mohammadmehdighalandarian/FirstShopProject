@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using FirstProject.Data;
 using FirstProject.Data.Repositories;
+using FirstProject.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,9 +21,13 @@ builder.Services.AddDbContext<FirstProjectContext>(options =>
 #endregion
 
 #region Ioc
+// dirty
+//service.AddScoped<IGroupRepository, GroupRepository>();
+//service.AddScoped<IUserRepository, UserRepository>();
 
-builder.Services.AddScoped<IGroupRepository, GroupRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+// Clean
+//Make Class in Model and ....
+DependencyContainer.RegisterDependency(builder.Services);
 
 #endregion
 
@@ -48,10 +53,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
+//app.UseStatusCodePagesWithRedirects("/StatusCode/{0}");
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.Use(async (context, next) =>
 {
     // Do work that doesn't write to the Response.
@@ -76,6 +85,5 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
-
 
 app.Run();
